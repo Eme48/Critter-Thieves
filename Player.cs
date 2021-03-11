@@ -1,9 +1,13 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Player : MonoBehaviour
 {
+
+
     private CharacterController controller;
 
 
@@ -17,6 +21,11 @@ public class Player : MonoBehaviour
 
     private Vector3 Front;
 
+
+    int Score = 0;
+    List<GameObject> cheese = new List<GameObject>();
+
+
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -26,7 +35,7 @@ public class Player : MonoBehaviour
     }
 
 
-    private void Movement()
+    private void Movement() //Movement
     {
         if (controller.isGrounded)
         {
@@ -60,12 +69,32 @@ public class Player : MonoBehaviour
         Climb = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    void GrabCheese(GameObject Cheese) //Mecanismo para el queso
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Score++;
+            //ui.UpdateScore(Score);
+            Cheese.gameObject.SetActive(false);
+            Debug.Log("Player 1: " + Score);
+            cheese.Add(Cheese);
+        }
+    }
+
+
+    private void OnTriggerStay(Collider other)  //Tags
     {
         if (other.gameObject.tag == "Climb")
         {
             Climb = true;
             Debug.Log("trepo");
+        }
+
+
+        if (other.gameObject.tag == "Cheese")
+        {
+            GrabCheese(other.gameObject);
+
         }
     }
 
